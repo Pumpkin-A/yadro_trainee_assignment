@@ -2,42 +2,27 @@ package main
 
 import "slices"
 
-type Item struct {
-	row []int64
-	sum int64
-}
-
-func countItems(matrix [][]int64) (Item, Item) {
-	сontainersItem := Item{
-		row: make([]int64, len(matrix)),
-	}
-	colorsItem := Item{
-		row: make([]int64, len(matrix)),
-	}
+func countItems(matrix [][]int64) ([]int64, []int64) {
+	сontainersCapacity := make([]int64, len(matrix))
+	colorsCapacity := make([]int64, len(matrix))
 	for i, row := range matrix {
 		for j, elem := range row {
-			сontainersItem.row[i] += elem
-			colorsItem.row[j] += elem
-
-			сontainersItem.sum += elem
-			colorsItem.sum += elem
+			сontainersCapacity[i] += elem
+			colorsCapacity[j] += elem
 		}
 	}
 
-	return colorsItem, сontainersItem
+	return colorsCapacity, сontainersCapacity
 }
 
 func doAlgorithm(matrix [][]int64) bool {
 	colorsItem, containersItem := countItems(matrix)
-	if colorsItem.sum != containersItem.sum {
-		return false
-	}
 
-	slices.Sort(containersItem.row)
-	slices.Sort(colorsItem.row)
+	slices.Sort(containersItem)
+	slices.Sort(colorsItem)
 
 	for i := range len(matrix) {
-		if colorsItem.row[i] != containersItem.row[i] {
+		if colorsItem[i] != containersItem[i] {
 			return false
 		}
 	}
